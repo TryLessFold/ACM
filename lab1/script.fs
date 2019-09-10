@@ -33,3 +33,32 @@ echo "Всего - " $TOTAL
 TMP=`lscpu | grep "Архитектура"`
 printf "%7s  " •
 echo "Свободно - " $FREE
+
+echo " Жесткий диск: "
+read -r _ TOTAL _ FREE _ DIRECTORY <<< `df -h | grep "/dev/sda3"`
+printf "%7s  " •
+echo "Всего - " $TOTAL
+
+printf "%7s  " •
+echo "Свободно - " $FREE
+
+printf "%7s  " •
+echo "Директория - " $DIRECTORY
+
+read -r _ TOTAL _ FREE _ <<< `free -h | grep "Swap:"`
+printf "%7s  " •
+echo "SWAP всего - " $TOTAL
+
+printf "%7s  " •
+echo "SWAP доступно - " $FREE
+
+echo " Сетевые интерфейсы: "
+printf "%7s  " •
+echo " Количество сетевых интерфейсов - "
+#TMP=``
+#TMP=${${ifconfig |cut -d ' ' -f1| awk '{printf $1}}//:/ }
+
+for i in $(ifconfig| cut -d ' ' -f1| tr ':' ' '| awk NF)
+do
+	echo $i
+done
