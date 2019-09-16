@@ -54,11 +54,35 @@ echo "SWAP доступно - " $FREE
 
 echo " Сетевые интерфейсы: "
 printf "%7s  " •
-echo " Количество сетевых интерфейсов - "
-#TMP=``
-#TMP=${${ifconfig |cut -d ' ' -f1| awk '{printf $1}}//:/ }
-
-for i in $(ifconfig| cut -d ' ' -f1| tr ':' ' '| awk NF)
+COUN=`ifconfig -a| cut -d ' ' -f1| tr ':' ' '|awk NF`
+tmp=0
+for i in $COUN
 do
-	echo $i
+	tmp=`expr $tmp + 1`
+done
+echo " Количество сетевых интерфейсов - " $tmp
+printf "%9s%12s%20s%20s%12s\n" Num Name Mac Ip Speed
+tmp=0
+for i in $COUN
+do
+	tmp=`expr $tmp + 1`
+	read -r _ IP _ _ _ _ <<< `ifconfig $i | grep 'inet'`
+	read -r _ MAC _ _ _ _ <<< `ifconfig $i | grep 'ether'`
+	read -r _ _ _ _ SPEED _ <<< `ifconfig $i | grep 'TX packets'`
+	if [ "$IP" == "" ]
+	then
+		IP="-"
+	fi
+
+	if [ "$MAC" == "" ]
+    then
+        MAC="-"
+    fi
+
+	if [ "$SPEED" == "" ]
+    then
+        ="-"
+    fi
+
+	printf "%9d%12s%20s%20s%12s\n" $tmp $i $MAC $IP $SPEED
 done
