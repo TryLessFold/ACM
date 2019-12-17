@@ -46,10 +46,10 @@ void dgemm_std(double *a, double *b, double *c, int n)
 {
     int i, j, k;
 
-    for (i = 0; i < N; i++) {
-	for (j = 0; j < N; j++) {
-		for (k = 0; k < N; k++) {
-			c[i][j] += a[i][k] * b[k][j];
+    for (i = 0; i < n; i++) {
+	for (j = 0; j < n; j++) {
+		for (k = 0; k < n; k++) {
+			c[i * n + j] += a[i* n + k] * b[k * n + j];
 		}
 	}
 }
