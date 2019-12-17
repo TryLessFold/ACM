@@ -42,6 +42,20 @@ void print(double *a, int n)
     printf("\n");
 }
 
+void dgemm_std(double *a, double *b, double *c, int n)
+{
+    int i, j, k;
+
+    for (i = 0; i < N; i++) {
+	for (j = 0; j < N; j++) {
+		for (k = 0; k < N; k++) {
+			c[i][j] += a[i][k] * b[k][j];
+		}
+	}
+}
+
+}
+
 void dgemm_transpose(double *a, double *b, double *c, int n)
 {
     int i, j, k;
@@ -93,7 +107,15 @@ int main(int argc, char *argv[])
 	a = malloc(n*n*(sizeof(double)));
 	b = malloc(n*n*(sizeof(double)));
 	c = malloc(n*n*(sizeof(double)));
+	
+	init(a, b, c, n);
 
+	gettimeofday(&tvs, NULL);
+	dgemm_std(a, b, c, n);
+	timer = te();
+
+	printf("%f ", timer);
+	
 	init(a, b, c, n);
 
 	gettimeofday(&tvs, NULL);
